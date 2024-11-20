@@ -1,0 +1,36 @@
+services:
+  app:
+    image: adenilsonkon/devopslabs-catalogo:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3333:3333"
+    depends_on:
+      - db
+    networks: 
+      - devopslabs
+  db:
+    image: postgres:12
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: devopslabs
+    networks:
+      - devopslabs
+    volumes:
+      - db-data:/var/lib/postgresql/data
+  adminer:
+    image: adminer
+    ports:
+      - "8082:8080"
+    networks:
+      - devopslabs
+networks:
+  devopslabs:
+    driver: bridge
+volumes:
+  db-data:  
+    name: devopslabs-db-data

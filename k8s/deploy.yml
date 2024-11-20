@@ -1,0 +1,99 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: catalogo
+  labels:
+    app: catalogo 
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: catalogo
+  template:
+    metadata:
+      labels:
+        app: catalogo
+    spec:
+      containers: 
+        - name: catalogo
+          image: adenilsonkon/devopslabs01-catalogo:latest
+          ports:
+            - containerPort: 3333
+          env:
+            - name: DB_HOST
+              value: db
+            - name: DB_USER
+              value: admin
+            - name: DB_PASSWORD
+              value: admin
+            - name: DB_DATABASE
+              value: devopslabs
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: catalogo
+spec:
+  selector:
+    app: catalogo
+  ports:
+    - protocol: TCP
+      port: 3333
+      targetPort: 3333
+      nodePort: 32000
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: db
+spec:
+  selector:
+    matchLabels:
+      app: psql-db
+  serviceName: psql-db
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: psql-db
+    spec:
+      containers:
+      - name: psql-db
+        image: postgres:14
+        ports:
+        - containerPort: 5432
+        env:
+          - name: POSTGRES_USER
+            value: admin
+          - name: POSTGRES_PASSWORD
+            value: admin
+          - name: POSTGRES_DB
+            value: devopslabs
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: db
+spec:
+  selector:
+    app: psql-db
+  ports:
+    - protocol: TCP
+      port: 5432
+      targetPort: 5432
+  type: ClusterIP
