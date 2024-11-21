@@ -19,15 +19,9 @@ spec:
           image: adenilsonkon/devopslabs01-catalogo:latest
           ports:
             - containerPort: 3333
-          env:
-            - name: DB_HOST
-              value: db
-            - name: DB_USER
-              value: admin
-            - name: DB_PASSWORD
-              value: admin
-            - name: DB_DATABASE
-              value: devopslabs
+          envFrom:
+            - secretRef:
+                name: catalogo-secret
           resources:
             requests:
               memory: "64Mi"
@@ -70,13 +64,9 @@ spec:
         image: postgres:14
         ports:
         - containerPort: 5432
-        env:
-          - name: POSTGRES_USER
-            value: admin
-          - name: POSTGRES_PASSWORD
-            value: admin
-          - name: POSTGRES_DB
-            value: devopslabs
+        envFrom:
+          - secretRef:
+              name: db-secret
         resources:
           requests:
             memory: "64Mi"
@@ -84,6 +74,14 @@ spec:
           limits:
             memory: "128Mi"
             cpu: "500m"
+        volumeMounts:
+          - name: db-data
+            mountPath: /var/lib/postgresql/data
+      volumes:
+        - name: db-data
+          persistentVolumeClaim:
+            claimName: pg-data
+
 ---
 apiVersion: v1
 kind: Service

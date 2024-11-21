@@ -12,7 +12,7 @@
 ![Diagrama](./docs-assets/diagrama.drawio.png)
 
 ```SQL
-INSERT INTO Products (name, price, createdAt, updatedAt)
+INSERT INTO Products (name, price, created_at, updated_at)
 VALUES 
   ('Notebook Dell Inspiron', 3999.99, NOW(), NOW()),
   ('Smartphone Samsung Galaxy S21', 2999.90, NOW(), NOW()),
