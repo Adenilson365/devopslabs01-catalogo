@@ -1,14 +1,24 @@
-import Product from "../models/Products";
+import Product from "../models/Product.js";
 
 class ProductController {
     async index(req, res) {
+        console.log("Fetching products...", req.query);
         try {
             const products = await Product.findAll();
+            console.log("Products:", products);
+    
+            // Verificar se o resultado é um array
+            if (!Array.isArray(products)) {
+                throw new Error("Invalid response from database");
+            }
+    
             return res.status(200).json(products);
         } catch (error) {
+            console.error("Error fetching products:", error.message || error);
             return res.status(500).json({ error: "Error fetching products" });
         }
     }
+    
 
     async show(req, res) {
         const { id } = req.params;

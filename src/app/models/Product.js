@@ -9,6 +9,8 @@ class Product extends Model {
             },
             {
                 sequelize,
+                tableName: "products",
+                
             }
         );
         return this;
