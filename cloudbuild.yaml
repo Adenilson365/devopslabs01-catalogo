@@ -1,0 +1,36 @@
+steps:
+
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 
+           'us-central1-docker.pkg.dev/$PROJECT_ID/$REPO_NAME/$_APP_NAME:$SHORT_SHA', '.']
+
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push',  'us-central1-docker.pkg.dev/$PROJECT_ID/$REPO_NAME/$_APP_NAME:$SHORT_SHA']
+
+
+# deploy container image to GKE
+  - name: "gcr.io/cloud-builders/gke-deploy"
+    args:
+    - run
+    - --filename=./k8s/*.yaml
+    - --location=_REGION
+    - --cluster=$_CLUSTER
+  - name: "gcr.io/cloud-builders/gke-deploy"
+    args:
+    - run
+    - --filename=./k8s/deploy/deply.yaml
+    - --location=_REGION
+    - --cluster=$_CLUSTER
+
+options:
+  logging: CLOUD_LOGGING_ONLY
+
+
+images:
+  - us-central1-docker.pkg.dev/$PROJECT_ID/$REPO_NAME/$_APP_NAME:$SHORT_SHA
+
+substitutions:
+  _APP_NAME: devopslabs
+  REPO_NAME: devopslabs-repository
+  _REGION: us-east1
+  _CLUSTER: devvops-labs01
