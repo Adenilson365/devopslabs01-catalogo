@@ -12,15 +12,10 @@ steps:
   - name: "gcr.io/cloud-builders/gke-deploy"
     args:
     - run
-    - --filename=./k8s/*.yaml
+    - --filename=k8s/deploy.yaml
     - --location=_REGION
     - --cluster=$_CLUSTER
-  - name: "gcr.io/cloud-builders/gke-deploy"
-    args:
-    - run
-    - --filename=./k8s/deploy/deply.yaml
-    - --location=_REGION
-    - --cluster=$_CLUSTER
+
 
 options:
   logging: CLOUD_LOGGING_ONLY
