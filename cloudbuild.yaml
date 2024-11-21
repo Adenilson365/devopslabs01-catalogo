@@ -13,7 +13,7 @@ steps:
     args:
     - run
     - --filename=k8s/deploy.yaml
-    - --location=_REGION
+    - --location=$_REGION
     - --cluster=$_CLUSTER
 
 
@@ -28,4 +28,4 @@ substitutions:
   _APP_NAME: devopslabs
   REPO_NAME: devopslabs-repository
   _REGION: us-east1
-  _CLUSTER: devvops-labs01
+  _CLUSTER: devops-labs01
