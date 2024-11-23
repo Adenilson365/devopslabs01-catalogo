@@ -11,6 +11,30 @@
 
 ![Diagrama](./docs-assets/diagrama.drawio.png)
 
+### Documentação
+- [cert-manager](https://cert-manager.io/)
+- [LetsEncrypt](https://letsencrypt.org/)
+
+### Como Configurar HTTPS
+- Instale o cert-manager seguindo a documentação cert-manager.
+- Crie o kind ClusterIssuer seguindo: [Documentação](https://cert-manager.io/docs/tutorials/acme/nginx-ingress/)
+- Adicione as configurações de Annotations e spec.tls, ainda seguin a documentação do passo anterior
+```YAML
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: devopslabs
+  annotations:
+   cert-manager.io/cluster-issuer: letsencrypt-prod
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - meudominio.com.br
+      secretName: letsencrypt-prod
+```
+- Pronto - HTTPS configurado.
+
 ```SQL
 INSERT INTO Products (name, price, created_at, updated_at)
 VALUES 

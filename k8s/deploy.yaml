@@ -67,6 +67,8 @@ spec:
         envFrom:
           - secretRef:
               name: db-secret
+          - configMapRef:
+              name: db-config
         resources:
           requests:
             memory: "64Mi"
@@ -76,11 +78,12 @@ spec:
             cpu: "500m"
         volumeMounts:
           - name: db-data
-            mountPath: /var/lib/postgresql/data
+            mountPath: /var/lib/postgresql/data/db
+            subPath: db
       volumes:
         - name: db-data
-          persistentVolumeClaim:
-            claimName: pg-data
+          emptyDir: {}
+
 
 ---
 apiVersion: v1
@@ -95,3 +98,4 @@ spec:
       port: 5432
       targetPort: 5432
   type: ClusterIP
+
