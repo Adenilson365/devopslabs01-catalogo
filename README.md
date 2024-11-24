@@ -1,4 +1,4 @@
-## Diagrama:
+
 
 ### Objetivos
  - Pipeline CI/CD cloudBuild + GKE
@@ -7,8 +7,11 @@
  - Aplicar Prometheus e Grafana
  - Infra com Terraform usando modulos
 
-
-
+### Repositórios relacionados 
+- [Frontend](https://github.com/Adenilson365/devopslabs01-frontend)
+- [Terraform - Infra](https://github.com/Adenilson365/devopslabs01-iac)
+- [Api - Catalogo](https://github.com/Adenilson365/devopslabs01-catalogo)
+### Diagrama de arquitetura
 ![Diagrama](./docs-assets/diagrama.drawio.png)
 
 ### Documentação
