@@ -14,6 +14,8 @@
 ### Documentação
 - [cert-manager](https://cert-manager.io/)
 - [LetsEncrypt](https://letsencrypt.org/)
+- [Ingress Nginx](https://kubernetes.github.io/ingress-nginx/deploy/#gce-gke)
+- [Istio - Service Mesh](https://istio.io/)
 
 ### Como Configurar HTTPS
 - Instale o cert-manager seguindo a documentação cert-manager.
@@ -34,6 +36,61 @@ spec:
       secretName: letsencrypt-prod
 ```
 - Pronto - HTTPS configurado.
+
+### Configuração inícial do Cluster
+- Execute o terraform ou crie um cluster GKE [Repositório de IAC](https://github.com/Adenilson365/devopslabs01-iac)
+- Instale a CNI ingress-nginx
+- Instale a CLI do Istio 
+- Aplique os arquivos de configuração 
+  - Secrets
+  - ConfigMaps
+  - Ingress Controller
+  - PersistentVolumeClaim
+
+### Variáveis de ambiente
+- Secrets 
+```YAML
+apiVersion: v1 
+kind: Secret
+metadata:
+  name: db-secret
+type: Opaque
+data:
+  POSTGRES_USER: valor
+  POSTGRES_PASSWORD: valor
+  POSTGRES_DB: valor
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: catalogo-secret
+type: Opaque
+data:
+  DB_HOST: valor
+  DB_USER: valor
+  DB_PASSWORD: valor
+  DB_DATABASE: valor
+```
+```shell
+#Como colocar em base64 para o secret
+echo -d 'valor' | base64 
+```
+
+
+### Scripts úteis
+
+- Criar e popular tabela no banco de dados.
+
+```SQL
+CREATE TABLE Products (
+    id SERIAL PRIMARY KEY, 
+    name VARCHAR(255) NOT NULL,
+    price FLOAT NOT NULL, 
+    created_at TIMESTAMP NOT NULL DEFAULT NOW(), 
+    updated_at TIMESTAMP NOT NULL DEFAULT NOW() 
+);
+
+```
 
 ```SQL
 INSERT INTO Products (name, price, created_at, updated_at)
@@ -63,15 +120,5 @@ VALUES
   ('Bicicleta Caloi Elite Carbon', 9999.99, NOW(), NOW()),
   ('Mochila para Notebook Samsonite', 299.99, NOW(), NOW()),
   ('Relógio Garmin Forerunner 245', 1499.99, NOW(), NOW());
-
-```
-```SQL
-CREATE TABLE Products (
-    id SERIAL PRIMARY KEY, 
-    name VARCHAR(255) NOT NULL,
-    price FLOAT NOT NULL, 
-    created_at TIMESTAMP NOT NULL DEFAULT NOW(), 
-    updated_at TIMESTAMP NOT NULL DEFAULT NOW() 
-);
 
 ```
