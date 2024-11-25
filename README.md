@@ -1,11 +1,12 @@
 
 
 ### Objetivos
- - Pipeline CI/CD cloudBuild + GKE
- - Usar como Helm Charts 
- - Aplicar Certificados SSL/TLS (Let's Ebcrypt)
- - Aplicar Prometheus e Grafana
- - Infra com Terraform usando modulos
+ - Pipeline CI/CD cloudBuild + GKE.
+ - Aplicar Certificados SSL/TLS (Let's Ebcrypt) para https.
+ - Aplicar Istio para Service Mesh.
+ - Aplicar Prometheus e Grafana.
+ - Infra com Terraform usando modulos.
+
 
 ### Repositórios relacionados 
 - [Frontend](https://github.com/Adenilson365/devopslabs01-frontend)
@@ -19,6 +20,16 @@
 - [LetsEncrypt](https://letsencrypt.org/)
 - [Ingress Nginx](https://kubernetes.github.io/ingress-nginx/deploy/#gce-gke)
 - [Istio - Service Mesh](https://istio.io/)
+
+### Configuração inícial do Cluster
+- Execute o terraform ou crie um cluster GKE [Repositório de IAC](https://github.com/Adenilson365/devopslabs01-iac)
+- Instale a CNI ingress-nginx
+- Instale a CLI do Istio 
+- Aplique os arquivos de configuração 
+  - Secrets
+  - ConfigMaps
+  - Ingress Controller
+  - PersistentVolumeClaim
 
 ### Como Configurar HTTPS
 - Instale o cert-manager seguindo a documentação cert-manager.
@@ -40,15 +51,30 @@ spec:
 ```
 - Pronto - HTTPS configurado.
 
-### Configuração inícial do Cluster
-- Execute o terraform ou crie um cluster GKE [Repositório de IAC](https://github.com/Adenilson365/devopslabs01-iac)
-- Instale a CNI ingress-nginx
-- Instale a CLI do Istio 
-- Aplique os arquivos de configuração 
-  - Secrets
-  - ConfigMaps
-  - Ingress Controller
-  - PersistentVolumeClaim
+### Intalar Istio
+- [LINK](https://istio.io/latest/docs/ambient/install/platform-prerequisites/) - Aplique a configuração específica para o Kubernetes, neste projeto GKE.
+- [LINK](https://istio.io/latest/docs/ambient/install/helm/) - Instale os componentes base do Istio via Helm
+- [LINK](https://istio.io/latest/docs/ops/integrations/kiali/#installation) - Instale o kiali dashboard
+- [LINK](https://istio.io/latest/docs/ops/integrations/grafana/) - Instale o componente Grafana
+- [LINK](https://istio.io/latest/docs/ops/integrations/prometheus/) - Instale o componente Prometheus
+- [LINK](https://istio.io/latest/docs/ops/integrations/jaeger/#installation) - Para Tracing instale o Jaeger
+
+- Após instalar os componentes injete a label no namespace da aplicação.
+  - Novos pods terão sidecar de proxy do istio, pods existentes precisarão ser recriados.
+```
+kubectl label namespace <NomeNamespace> istio-injection=enabled
+```
+
+
+```shell
+#Kubectl Grafana
+kubectl apply -f https://raw.githubusercontent.com/istio/istio/release-1.24/samples/addons/grafana.yaml
+#Kubectl Prometheus
+kubectl apply -f https://raw.githubusercontent.com/istio/istio/release-1.24/samples/addons/prometheus.yaml
+#Kubectl Jaeger-Tracing
+kubectl apply -f https://raw.githubusercontent.com/istio/istio/release-1.24/samples/addons/jaeger.yaml
+
+```
 
 ### Variáveis de ambiente
 - Secrets 
@@ -93,9 +119,6 @@ CREATE TABLE Products (
     updated_at TIMESTAMP NOT NULL DEFAULT NOW() 
 );
 
-```
-
-```SQL
 INSERT INTO Products (name, price, created_at, updated_at)
 VALUES 
   ('Notebook Dell Inspiron', 3999.99, NOW(), NOW()),
