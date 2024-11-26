@@ -13,7 +13,7 @@
 - [Terraform - Infra](https://github.com/Adenilson365/devopslabs01-iac)
 - [Api - Catalogo](https://github.com/Adenilson365/devopslabs01-catalogo)
 ### Diagrama de arquitetura
-![Diagrama](./docs-assets/diagrama.drawio.png)
+![Diagrama](./docs-assets/diagrama.png)
 
 ### Documentação
 - [cert-manager](https://cert-manager.io/)
