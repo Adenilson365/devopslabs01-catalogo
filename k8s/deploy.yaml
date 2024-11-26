@@ -43,6 +43,7 @@ spec:
       targetPort: 3333
       nodePort: 32000
   type: NodePort
+
 ---
 apiVersion: apps/v1
 kind: StatefulSet
@@ -98,4 +99,5 @@ spec:
       port: 5432
       targetPort: 5432
   type: ClusterIP
+--- 
 

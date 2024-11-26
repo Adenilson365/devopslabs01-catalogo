@@ -20,6 +20,7 @@
 - [LetsEncrypt](https://letsencrypt.org/)
 - [Ingress Nginx](https://kubernetes.github.io/ingress-nginx/deploy/#gce-gke)
 - [Istio - Service Mesh](https://istio.io/)
+- [Stack Prometheus + Grafana](https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack)
 
 ### Configuração inícial do Cluster
 - Execute o terraform ou crie um cluster GKE [Repositório de IAC](https://github.com/Adenilson365/devopslabs01-iac)
