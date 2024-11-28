@@ -15,6 +15,9 @@
 ### Diagrama de arquitetura
 ![Diagrama](./docs-assets/diagrama.png)
 
+### Diagrama do ServiceMesh
+![Service Mesh Istio](./docs-assets/service-mesh.png)
+
 ### Documentação
 - [cert-manager](https://cert-manager.io/)
 - [LetsEncrypt](https://letsencrypt.org/)
