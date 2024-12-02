@@ -6,19 +6,17 @@ class ProductController {
         try {
             const products = await Product.findAll();
             console.log("Products:", products);
-    
-            // Verificar se o resultado é um array
+
             if (!Array.isArray(products)) {
                 throw new Error("Invalid response from database");
             }
-    
+
             return res.status(200).json(products);
         } catch (error) {
             console.error("Error fetching products:", error.message || error);
             return res.status(500).json({ error: "Error fetching products" });
         }
     }
-    
 
     async show(req, res) {
         const { id } = req.params;
@@ -34,9 +32,9 @@ class ProductController {
     }
 
     async store(req, res) {
-        const { name, price } = req.body;
+        const { name, price, imagem_id, category, stars, stock, num_reviews } = req.body;
         try {
-            const product = await Product.create({ name, price });
+            const product = await Product.create({ name, price, imagem_id, category, stars, stock, num_reviews });
             return res.status(201).json(product);
         } catch (error) {
             return res.status(500).json({ error: "Error creating product" });
@@ -45,13 +43,13 @@ class ProductController {
 
     async update(req, res) {
         const { id } = req.params;
-        const { name, price } = req.body;
+        const { name, price, imagem_id, category, stars, stock, num_reviews } = req.body;
         try {
             const product = await Product.findByPk(id);
             if (!product) {
                 return res.status(404).json({ error: "Product not found" });
             }
-            await product.update({ name, price });
+            await product.update({ name, price, imagem_id, category, stars, stock, num_reviews });
             return res.status(200).json(product);
         } catch (error) {
             return res.status(500).json({ error: "Error updating product" });
@@ -71,16 +69,6 @@ class ProductController {
             return res.status(500).json({ error: "Error deleting product" });
         }
     }
-    teste(req, res) {
-        const products = [
-            { id: 1, name: "Product A", price: 19.99 },
-            { id: 2, name: "Product B", price: 29.99 },
-            { id: 3, name: "Product C", price: 39.99 },
-            { id: 4, name: "Product D", price: 49.99 }
-        ];
-        return res.status(200).json(products);
-    }
-    
 }
 
 export default new ProductController();

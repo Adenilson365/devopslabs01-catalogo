@@ -1,34 +1,29 @@
-'use strict';
+import Sequelize, { Model } from "sequelize";
 
-module.exports = {
-  up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('Products', {
-      id: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
-      },
-      name: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      price: {
-        type: Sequelize.FLOAT,
-        allowNull: false,
-      },
-      createdAt: {
-        type: Sequelize.DATE,
-        allowNull: false,
-      },
-      updatedAt: {
-        type: Sequelize.DATE,
-        allowNull: false,
-      },
-    });
-  },
+class Product extends Model {
+    static init(sequelize) {
+        super.init(
+            {
+                name: Sequelize.STRING,
+                price: Sequelize.FLOAT,
+                imagem_id: Sequelize.STRING,
+                category: Sequelize.STRING,
+                stars: Sequelize.INTEGER,
+                stock: Sequelize.INTEGER,
+                num_reviews: Sequelize.INTEGER,
+                created_at: Sequelize.DATE,
+                updated_at: Sequelize.DATE,
+            },
+            {
+                sequelize,
+                tableName: "products",
+                timestamps: true,
+                createdAt: "created_at",
+                updatedAt: "updated_at",
+            }
+        );
+        return this;
+    }
+}
 
-  down: async (queryInterface) => {
-    await queryInterface.dropTable('Products');
-  },
-};
+export default Product;
