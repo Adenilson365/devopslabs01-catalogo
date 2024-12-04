@@ -10,8 +10,10 @@
 
 ### Repositórios relacionados 
 - [Frontend](https://github.com/Adenilson365/devopslabs01-frontend)
+- [BackEnd - Api-Images](https://github.com/Adenilson365/devopslabs01-api-images)
 - [Terraform - Infra](https://github.com/Adenilson365/devopslabs01-iac)
-- [Api - Catalogo](https://github.com/Adenilson365/devopslabs01-catalogo)
+
+
 ### Diagrama de arquitetura
 ![Diagrama](./docs-assets/diagrama.png)
 
@@ -68,6 +70,8 @@ spec:
 ```
 kubectl label namespace <NomeNamespace> istio-injection=enabled
 ```
+- Instalado o profile ambient
+![ProfileIstio](./docs-assets/istio-profile.png)
 
 
 ```shell
