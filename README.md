@@ -152,3 +152,22 @@ INSERT INTO products (name, price, imagem_id, category, stars, stock, num_review
 
 
 ```
+### Opção por certificado auto-gerenciado 
+[Google Docs](https://cloud.google.com/load-balancing/docs/ssl-certificates/self-managed-certs?hl=pt-br)
+[OpenSSL](https://openssl-library.org/source/)
+
+- Crie a chave privada: 
+```
+openssl genrsa -out meudominio.com.br.pem 2048
+
+```
+- Crie a request :
+
+```
+openssl req -new -key meudominio.com.br.key  -out meudominio.com.br.csr.pem
+```
+- Crie o certificado auto-gerenciado.
+```
+openssl x509 -req -days 365 -in meudominio.com.br.csr.pem -signkey meudominio.com.br.pem  -out meudonio.com.br.cer.pem
+
+```
