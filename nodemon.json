@@ -1,5 +1,8 @@
 {
     "execMap":{
-      "js": "node -r sucrase/register"
-    }
+      "js": "node -r ./instrumentation.js -r sucrase/register"
+    },
+    "watch": ["src"],
+    "ext": "js,jsx",
+    "ignore": ["node_modules"]
   }
