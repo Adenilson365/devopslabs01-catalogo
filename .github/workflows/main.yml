@@ -2,9 +2,9 @@ name: Publish docker image on DockerHub
 
 on:
   push: 
-    branches: ["main"]
+    branches: ["main", "dev"]
   pull_request:
-    branches: ["main"]
+    branches: ["main", "dev"]
   workflow_dispatch:
 jobs:
   build:
@@ -34,13 +34,6 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
           
-      - name: Push the Docker image tag hash
-        run: docker push $DOCKER_TAG
-        
-      - name: Push the Docker image tag latest
-        run: docker tag $DOCKER_TAG adenilsonkon/devopslabs-catalogo:latest && docker push adenilsonkon/devopslabs-catalogo:latest
-
-
       - name: Push the Docker image tag hash
         run: docker push $DOCKER_TAG
         
