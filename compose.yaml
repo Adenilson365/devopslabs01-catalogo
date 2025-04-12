@@ -4,6 +4,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+
     ports:
       - "3333:3333"
     depends_on:
@@ -15,6 +16,13 @@ services:
       DB_USER: admin  
       DB_PASSWORD: admin
       DB_DATABASE: devopslabs
+      OTEL_SERVICE_NAME: catalogo
+      OTEL_EXPORTER_OTLP_TRACES_ENDPOINT: http://otel:4318/v1/traces
+      OTEL_EXPORTER_OTLP_METRICS_ENDPOINT: http://otel:4318/v1/metrics
+      OTEL_EXPORTER_OTLP_INSECURE: true
+      OTEL_TRACES_EXPORTER: otlp
+      OTEL_METRICS_EXPORTER: otlp
+      OTEL_LOGS_EXPORTER: otlp
   db:
     image: postgres:12
     ports:
@@ -31,6 +39,15 @@ services:
     image: adminer
     ports:
       - "8082:8080"
+    networks:
+      - devopslabs
+  otel:
+    image: grafana/otel-lgtm
+    ports:
+      - 4317:4317
+      - 4318:4318
+      - 3000:3000
+      - 9090:9090
     networks:
       - devopslabs
 networks:
