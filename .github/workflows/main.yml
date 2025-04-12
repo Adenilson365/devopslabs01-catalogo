@@ -20,9 +20,13 @@ jobs:
             adenilsonkon/devopslabs-catalogo
           tags: |
             type=sha
+            type=ref,event=branch,prefix=,suffix=-${{ github.sha }}
             
-      - name: Build the Docker image
-        run: docker build . --file Dockerfile --tag ${{ steps.meta.outputs.tags }}
+            - name: Build the Docker image
+            run: |
+                TAG=$(echo "${{ steps.meta.outputs.tags }}" | head -n1)
+                echo "DOCKER_TAG=$TAG" >> $GITHUB_ENV
+                docker build . --file Dockerfile --tag $TAG
         
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
@@ -31,7 +35,41 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
           
       - name: Push the Docker image tag hash
-        run: docker push ${{ steps.meta.outputs.tags }}
+        run: docker push $DOCKER_TAG
         
       - name: Push the Docker image tag latest
-        run: docker tag ${{ steps.meta.outputs.tags }} adenilsonkon/devopslabs-catalogo:latest && docker push adenilsonkon/devopslabs-catalogo:latest
+        run: docker tag $DOCKER_TAG adenilsonkon/devopslabs-catalogo:latest && docker push adenilsonkon/devopslabs-catalogo:latest
+
+
+      - name: Push the Docker image tag hash
+        run: docker push $DOCKER_TAG
+        
+      - name: Push the Docker image tag latest
+        run: docker tag $DOCKER_TAG adenilsonkon/devopslabs-catalogo:latest && docker push adenilsonkon/devopslabs-catalogo:latest
+      
+      - name: Atualiza tag no repositório OPS
+        uses: actions/checkout@v4
+        with: 
+          repository: Adenilson365/devopslabs01-ops-catalogo
+          token: ${{ secrets.ACCESS_TOKEN_GIT }}
+          ref: ${{ github.ref_name }}
+          path: .
+
+      - name: Atualiza tag no repositório OPS
+        run: |
+          pwd
+          cat ./application/deployments/deployment.yaml
+          sed -i "s|image: adenilsonkon/:.*|image: adenilsonkon/devopslabs-catalogo:$DOCKER_TAG|g" ./application/deployments/deployment.yaml
+          cat ./application/deployments/deployment.yaml
+        env:
+          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN_GIT }}
+      - name: Commit and push changes
+        run: | 
+          pwd
+          git config  user.name "GitHub Actions"
+          git config  user.email "actions@github.com"
+          git add .
+          git commit -m "Atualiza tag do docker image para $DOCKER_TAG"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN_GIT }}
