@@ -52,6 +52,7 @@ jobs:
         run: |
           pwd
           cat ./application/deployments/deployment.yaml
+          echo "Atualizando tag do docker image para $DOCKER_TAG"
           sed -i "s|image: adenilsonkon/devopslabs-catalogo:.*|image: adenilsonkon/devopslabs-catalogo:$DOCKER_TAG|g" ./application/deployments/deployment.yaml
           cat ./application/deployments/deployment.yaml
         env:
