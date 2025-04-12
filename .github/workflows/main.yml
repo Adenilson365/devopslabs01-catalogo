@@ -22,11 +22,11 @@ jobs:
             type=sha
             type=ref,event=branch,prefix=,suffix=-${{ github.sha }}
             
-            - name: Build the Docker image
-            run: |
-                TAG=$(echo "${{ steps.meta.outputs.tags }}" | head -n1)
-                echo "DOCKER_TAG=$TAG" >> $GITHUB_ENV
-                docker build . --file Dockerfile --tag $TAG
+      - name: Build the Docker image
+        run: |
+            TAG=$(echo "${{ steps.meta.outputs.tags }}" | head -n1)
+            echo "DOCKER_TAG=$TAG" >> $GITHUB_ENV
+            docker build . --file Dockerfile --tag $TAG
         
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
