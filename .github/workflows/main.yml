@@ -52,8 +52,8 @@ jobs:
         run: |
           pwd
           cat ./application/deployments/deployment.yaml
-          echo "Atualizando tag do docker image para $DOCKER_TAG"
-          sed -i "s|image: adenilsonkon/devopslabs-catalogo:.*|image: adenilsonkon/devopslabs-catalogo:$DOCKER_TAG|g" ./application/deployments/deployment.yaml
+          echo "\nAtualizando tag do docker image para $DOCKER_TAG\n"
+          sed -i "s|image: adenilsonkon/devopslabs-catalogo:.*|image: $DOCKER_TAG|g" ./application/deployments/deployment.yaml
           cat ./application/deployments/deployment.yaml
         env:
           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN_GIT }}
