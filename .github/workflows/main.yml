@@ -59,7 +59,7 @@ jobs:
         run: |
           pwd
           cat ./application/deployments/deployment.yaml
-          sed -i "s|image: adenilsonkon/:.*|image: adenilsonkon/devopslabs-catalogo:$DOCKER_TAG|g" ./application/deployments/deployment.yaml
+          sed -i "s|image: adenilsonkon/devopslabs-catalogo:.*|image: adenilsonkon/devopslabs-catalogo:$DOCKER_TAG|g" ./application/deployments/deployment.yaml
           cat ./application/deployments/deployment.yaml
         env:
           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN_GIT }}
